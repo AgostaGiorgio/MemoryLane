@@ -41,15 +41,35 @@ Install Poetry by following the [official guide](https://python-poetry.org/docs/
 ## **Usage**
 Run the script:
 ```bash
-python organize.py --input <input-folder> --output <output-folder> --date-format <date-format>
+python main.py --input <input-folder> --output <output-folder> --date-format <date-format>
 ```  
 - Replace `<input-folder>` with the directory containing your photos and videos.
 - Replace `<output-folder>` with the directory where organized files will be stored.
 - Replace `<date-format>` with your desired date format (e.g., `DD/MM/YY`, `YY/MM`).
 
+### **Command-Line Options**
+- `--input`: Directory containing the photos and videos (required).
+- `--output`: Directory to store organized files (required).
+- `--date-format`: **Date format** for organizing files. You can specify the format using the following placeholders:
+  - `%Y`: Year with 4 digits (e.g., `2021`)
+  - `%y`: Year with 2 digits (e.g., `21`)
+  - `%m`: Month in numbers (01-12)
+  - `%B`: Full month name (e.g., `April`)
+  - `%d`: Day of the month (01-31)
+
+  **Example formats:**
+  - `'%Y/%B/%d'` → `2021/April/12`
+  - `'%y/%m/%d'` → `21/04/12`
+  - `'%Y/%m'`    → `2021/04`
+  - `'%d/%m/%y'` → `12/04/21`
+
+  **Default format**: `'%Y/%B'` (e.g., `2021/April`).
+   - `--log`: Enable detailed logging (optional).
+   - `--move`: Move files instead of copying them (optional).
+
 ## **Example**
 ```bash
-python organize.py --input /path/to/photos --output /path/to/organized --date-format DD/MM/YY
+python main.py --input /path/to/photos --output /path/to/organized --date-format DD/MM/YY
 ``` 
 
 ## **License**

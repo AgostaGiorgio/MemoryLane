@@ -1,0 +1,4 @@
+pyheif
+piexif
+pillow
+pymediainfo
