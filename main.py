@@ -1,16 +1,20 @@
+from datetime import datetime
 import os
+import re
 import sys
 import argparse
 from argparse import RawTextHelpFormatter
+from memorylane.date_extractor import DATE_PATTERN, get_creation_date
 from memorylane.organizer import organize_files
 from memorylane.logger import logger
+from memorylane.utils import get_filename_from_path
 
 def main():
 
     # Parsing command-line arguments
     parser = argparse.ArgumentParser(description="Organize photos and videos by date", formatter_class=RawTextHelpFormatter)
-    parser.add_argument('--input', type=str, required=True, help="Directory containing the photos and videos")
-    parser.add_argument('--output', type=str, required=True, help="Directory to store organized files")
+    parser.add_argument('--input', '-i', type=str, required=True, help="Directory containing the photos and videos")
+    parser.add_argument('--output', '-o', type=str, required=True, help="Directory to store organized files")
     parser.add_argument('--date-format', type=str, default="%Y/%B", 
                         help=(
                             "Date format for organizing files (default: '%%Y/%%B').\n"
@@ -27,11 +31,11 @@ def main():
                             "  '%%d/%%m/%%y' -> '12/04/21'\n"
                         ))
     parser.add_argument('--move', action='store_true', help="Move files instead of copying them")
-    parser.add_argument('--log', action='store_true', help="Enable detailed logging")
+    parser.add_argument('--verbose', action='store_true', help="Enable detailed logging")
     args = parser.parse_args()
 
     # Log the command-line parameters
-    if args.log:
+    if args.verbose:
         logger.info(f"Starting the process with the following parameters:")
         logger.info(f"Input Directory: {args.input}")
         logger.info(f"Output Directory: {args.output}")
