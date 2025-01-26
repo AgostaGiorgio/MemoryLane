@@ -5,7 +5,7 @@ import sys
 import argparse
 from argparse import RawTextHelpFormatter
 from memorylane.date_extractor import DATE_PATTERN, get_creation_date
-from memorylane.organizer import check_dates, organize_files
+from memorylane.organizer import check_dates, organize_files, validate_dir
 from memorylane.logger import logger
 from memorylane.utils import get_filename_from_path
 
@@ -32,6 +32,7 @@ def main():
                         ))
     parser.add_argument('--move', action='store_true', help="Move files instead of copying them")
     parser.add_argument('--check-date', action='store_true', help="Check from which photos and videos the tool is able to extract the info")
+    parser.add_argument('--validate-dir', action='store_true', help="Validate the structure of a ginven folder based on the date-format")
     args = parser.parse_args()
 
     # Ensure input directory exists
@@ -42,7 +43,9 @@ def main():
     try:
         if args.check_date:
             check_dates(args.input, args.date_format, logger)
-        else:            
+        elif args.validate_dir:
+            validate_dir(args.input, args.date_format, logger)
+        else:
             organize_files(args.input, args.output, args.date_format, logger, move=args.move)
     except Exception as e:
         sys.exit(1)
@@ -51,3 +54,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # validate_dir("./test", "%Y/.*", logger)

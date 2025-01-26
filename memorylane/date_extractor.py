@@ -1,4 +1,3 @@
-import os
 import re
 import pyheif
 import piexif

@@ -66,6 +66,7 @@ python main.py --input <input-folder> --output <output-folder> --date-format <da
   **Default format**: `'%Y/%B'` (e.g., `2021/April`).
 - `--move`: Move files instead of copying them (optional).
 - `--check-date`: Check from which photos and videos the tool is able to extract the info
+- `--validate-dir`: Validate the structure of a ginven folder based on the date-format
 
 ## **Example**
 ```bash
