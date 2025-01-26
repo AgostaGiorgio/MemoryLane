@@ -13,7 +13,7 @@ XMP_REGEX = re.compile(
     r'.*photoshop:DateCreated>(.*)<\/photoshop:DateCreated.*', re.IGNORECASE)
 IMAGE_EXTS = {"jpg", "jpeg", "png", "gif", "bmp", "tiff", "heic", "webp"}
 VIDEO_EXTS = {"mp4", "mkv", "avi", "mov", "flv", "wmv", "webm", "m4v"}
-DATE_PATTERN = r"\b(\d{4})(\d{2})(\d{2})\b"
+DATE_PATTERN = r"\b(\d{4})(\d{2})(\d{2})"
 
 
 def get_creation_date(file_path):
@@ -24,24 +24,18 @@ def get_creation_date(file_path):
     :param file_path: Path to the photo or video file
     :return: The creation date as a datetime object, or None if not found
     """
-    try:
-        date = _from_file_name(file_path)
-        if not date:
-            file_extension = file_path.lower().split('.')[-1]
-
-            if file_extension == 'heic':
-                date = _from_heic(file_path)
-            elif file_extension in IMAGE_EXTS:
-                date = _from_classic_image(file_path)
-            elif file_extension in VIDEO_EXTS:
-                date = _from_classic_video(file_path)
-            else:
-                pass
-    except Exception as e:
-        date = None
-
+    date = _from_file_name(file_path)
     if not date:
-        return _from_default(file_path)
+        file_extension = file_path.lower().split('.')[-1]
+
+        if file_extension == 'heic':
+            date = _from_heic(file_path)
+        elif file_extension in IMAGE_EXTS:
+            date = _from_classic_image(file_path)
+        elif file_extension in VIDEO_EXTS:
+            date = _from_classic_video(file_path)
+        else:
+            pass
 
     return date
 
@@ -94,17 +88,3 @@ def _from_classic_video(file_path):
             logger.debug("Date extracted from classic video logic")
 
     return date
-
-
-def _from_default(file_path):
-    creation_time = os.path.getmtime(file_path)
-    creation_date = datetime.fromtimestamp(creation_time)
-    logger.debug("Date extracted from default logic")
-
-    return creation_date
-
-
-if __name__ == "__main__":
-    f = "./foto/20230521_194008078_iOS.jpg"
-    a = get_creation_date(f)
-    print(a)
