@@ -64,8 +64,8 @@ python main.py --input <input-folder> --output <output-folder> --date-format <da
   - `'%d/%m/%y'` → `12/04/21`
 
   **Default format**: `'%Y/%B'` (e.g., `2021/April`).
-   - `--log`: Enable detailed logging (optional).
-   - `--move`: Move files instead of copying them (optional).
+- `--move`: Move files instead of copying them (optional).
+- `--check-date`: Check from which photos and videos the tool is able to extract the info
 
 ## **Example**
 ```bash

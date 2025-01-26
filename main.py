@@ -5,7 +5,7 @@ import sys
 import argparse
 from argparse import RawTextHelpFormatter
 from memorylane.date_extractor import DATE_PATTERN, get_creation_date
-from memorylane.organizer import organize_files
+from memorylane.organizer import check_dates, organize_files
 from memorylane.logger import logger
 from memorylane.utils import get_filename_from_path
 
@@ -14,7 +14,7 @@ def main():
     # Parsing command-line arguments
     parser = argparse.ArgumentParser(description="Organize photos and videos by date", formatter_class=RawTextHelpFormatter)
     parser.add_argument('--input', '-i', type=str, required=True, help="Directory containing the photos and videos")
-    parser.add_argument('--output', '-o', type=str, required=True, help="Directory to store organized files")
+    parser.add_argument('--output', '-o', type=str, help="Directory to store organized files")
     parser.add_argument('--date-format', type=str, default="%Y/%B", 
                         help=(
                             "Date format for organizing files (default: '%%Y/%%B').\n"
@@ -31,33 +31,23 @@ def main():
                             "  '%%d/%%m/%%y' -> '12/04/21'\n"
                         ))
     parser.add_argument('--move', action='store_true', help="Move files instead of copying them")
-    parser.add_argument('--verbose', action='store_true', help="Enable detailed logging")
+    parser.add_argument('--check-date', action='store_true', help="Check from which photos and videos the tool is able to extract the info")
     args = parser.parse_args()
-
-    # Log the command-line parameters
-    if args.verbose:
-        logger.info(f"Starting the process with the following parameters:")
-        logger.info(f"Input Directory: {args.input}")
-        logger.info(f"Output Directory: {args.output}")
-        logger.info(f"Date Format: {args.date_format}")
 
     # Ensure input directory exists
     if not os.path.isdir(args.input):
-        logger.error(f"The input directory '{args.input}' does not exist.")
+        logger.error(f"❌ Input directory '{args.input}' does not exist.")
         sys.exit(1)
 
-    # Ensure output directory exists, create if not
-    if not os.path.exists(args.output):
-        os.makedirs(args.output)
-
-    # Organize files
     try:
-        organize_files(args.input, args.output, args.date_format, move=args.move, logger=logger)
+        if args.check_date:
+            check_dates(args.input, args.date_format, logger)
+        else:            
+            organize_files(args.input, args.output, args.date_format, logger, move=args.move)
     except Exception as e:
-        logger.error(f"An error occurred: {str(e)}")
         sys.exit(1)
 
-    logger.info("Process completed successfully.")
+    logger.info("\n\n✅✅ Process completed successfully ✅✅")
 
 if __name__ == "__main__":
     main()
