@@ -10,7 +10,7 @@ def setup_logger():
     ch.setLevel(logging.INFO)  # Set console log level to INFO
 
     # Create a formatter for log messages
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(message)s')
     ch.setFormatter(formatter)
 
     # Add the handler to the logger

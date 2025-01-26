@@ -27,13 +27,13 @@ def organize_files(input_dir, output_dir, date_format, move=False, logger=None):
         # Get the creation time of the file
         try:
             date = get_creation_date(file_path)
-            formatted_date = date.strftime(date_format)  # Format the date according to the user's choice
+            output_path = date.strftime(date_format)  # Format the date according to the user's choice
         except Exception as e:
-            logger.error(f"Could not retrieve creation date for file {filename}: {e}")
-            continue
+            logger.error(f"🚧 Could not retrieve creation date for file {filename}: {e}")
+            output_path = "unknown"
 
         # Create the target directory path
-        target_dir = os.path.join(output_dir, formatted_date)
+        target_dir = os.path.join(output_dir, output_path)
 
         # Ensure the target directory exists
         if not os.path.exists(target_dir):
@@ -49,9 +49,7 @@ def organize_files(input_dir, output_dir, date_format, move=False, logger=None):
             else:
                 shutil.copy2(file_path, target_path)
 
-            if logger:
-                logger.info(f"Successfully {'moved' if move else 'copied'} '{filename}' to '{target_path}'")
+            logger.info(f"✅ '{filename}' {'moved' if move else 'copied'} --> '{target_path}'")
         except Exception as e:
-            if logger:
-                logger.error(f"Failed to {'move' if move else 'copy'} '{filename}': {e}")
+            logger.error(f"❌ '{filename}': {e}")
 
