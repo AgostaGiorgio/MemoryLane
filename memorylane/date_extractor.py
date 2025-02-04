@@ -12,7 +12,7 @@ XMP_REGEX = re.compile(
     r'.*photoshop:DateCreated>(.*)<\/photoshop:DateCreated.*', re.IGNORECASE)
 IMAGE_EXTS = {"jpg", "jpeg", "png", "gif", "bmp", "tiff", "heic", "webp"}
 VIDEO_EXTS = {"mp4", "mkv", "avi", "mov", "flv", "wmv", "webm", "m4v"}
-DATE_PATTERN = r"\b(\d{4})(\d{2})(\d{2})"
+DATE_PATTERN = r"(\d{4})(\d{2})(\d{2})"
 
 
 def get_creation_date(file_path):
